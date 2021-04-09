@@ -12,29 +12,37 @@ d3.json("../../data/samples.json").then((data) => {
     // plot the 940 subject ID as a default plot when webpage loads
     console.log(data.samples)
     data.samples.forEach(function(value) {
+        
+        
+        
         if (value.id === "940") {
+
+            var yAxis = value.otu_ids.map(y => "OTU ID:" + y);
+            console.log(value.otu_labels[0])
             var traceD = {
-                x: value.sample_values.reverse(),
-                labels: value.otu_ids.reverse(),
+                x: value.sample_values.slice(0,10).reverse(),
+                y: yAxis.slice(0,10).reverse(),   
                 type: "bar",
-                orientation: "h"
+                orientation: "h",
+                text: value.otu_labels.slice(0,10).reverse(),
                
         };
 
-        console.log(value.otu_ids);
             plotD = [traceD];
 
             Plotly.newPlot("bar", plotD)
 
         // plot the default bubble chart on page
             var traceBD = {
-                x: value.otu_ids,
-                y: value.sample_values,
+                x: value.otu_ids.slice(0,10),
+                y: value.sample_values.slice(0,10),
                 mode: 'markers',
                 marker: {
                 color: value.otu_ids,
-                size: value.sample_values
-                }
+                size: value.sample_values.map(d=>(d/3)),
+                
+                },
+                text: value.otu_labels.slice(0,10)
             };
 
             plotBD = [traceBD];
@@ -104,13 +112,22 @@ d3.json("../../data/samples.json").then((data) => {
 
 
         // pull out the sampleValues for each subject using map and arrow functions
+        
+        
         data.samples.forEach(function(value) {
+
+            
+            
             if (value.id === selection) {
+
+                var yAxis = value.otu_ids.map(y => "OTU ID:" + y);
+                
                 var trace1 = {
-                    x: value.sample_values.reverse(),
-                    labels: value.otu_ids.reverse(),
+                    x: value.sample_values.slice(0,10).reverse(),
+                    y: yAxis.slice(0,10).reverse(),
                     type: "bar", 
-                    orientation: "h"
+                    orientation: "h",
+                    text: value.otu_labels.slice(0,10).reverse(),
                 };
         
                 plot = [trace1];
@@ -123,13 +140,14 @@ d3.json("../../data/samples.json").then((data) => {
         data.samples.forEach(function(value) {
             if (value.id === selection) {
                 var traceB = {
-                    x: value.otu_ids,
-                    y: value.sample_values,
+                    x: value.otu_ids.slice(0,10),
+                    y: value.sample_values.slice(0,10),
                     mode: 'markers',
                     marker: {
                       color: value.otu_ids,
-                      size: value.sample_values
-                    }
+                      size: value.sample_values.map(d=>(d/3))
+                    },
+                    text: value.otu_labels.slice(0,10)
                   };
         
                 plotB = [traceB];
