@@ -8,6 +8,80 @@ d3.json("../../data/samples.json").then((data) => {
         option.attr("value", value);
         option.text(value);
     });
+    
+    // plot the 940 subject ID as a default plot when webpage loads
+    console.log(data.samples)
+    data.samples.forEach(function(value) {
+        if (value.id === "940") {
+            var traceD = {
+                x: value.sample_values.reverse(),
+                labels: value.otu_ids.reverse(),
+                type: "bar",
+                orientation: "h"
+               
+        };
+
+        console.log(value.otu_ids);
+            plotD = [traceD];
+
+            Plotly.newPlot("bar", plotD)
+
+        // plot the default bubble chart on page
+            var traceBD = {
+                x: value.otu_ids,
+                y: value.sample_values,
+                mode: 'markers',
+                marker: {
+                color: value.otu_ids,
+                size: value.sample_values
+                }
+            };
+
+            plotBD = [traceBD];
+
+            Plotly.newPlot("bubble", plotBD);
+        };
+    });
+
+    var demoTable = d3.select(".panel-body");
+    
+    data.metadata.forEach(function (value) {
+        var num = value.id.toString()
+        
+        if (num === "940") {
+            
+            var p = demoTable.append("p");
+            p.attr("value", value.id);
+            p.text("ID:" + " " + value.id);
+
+            var p = demoTable.append("p");
+            p.attr("value", value.ethnicity);
+            p.text("Ethnicity:" + " " + value.ethnicity);
+
+            var p = demoTable.append("p");
+            p.attr("value", value.gender);
+            p.text("Gender:" + " " + value.gender);
+
+            var p = demoTable.append("p");
+            p.attr("value", value.age);
+            p.text("Age:" + " " + value.age);
+
+            var p = demoTable.append("p");
+            p.attr("value", value.location);
+            p.text("Location:" + " " + value.location);
+
+            var p = demoTable.append("p");
+            p.attr("value", value.bbtype);
+            p.text("bbtype:" + " " + value.bbtype);
+
+            var p = demoTable.append("p");
+            p.attr("value", value.wfreq);
+            p.text("wfreq:" + " " + value.wfreq);
+        
+        };
+    
+    });
+
 
     
 
@@ -16,6 +90,11 @@ d3.json("../../data/samples.json").then((data) => {
 
 
     function optionChanged() {
+
+        // clear out the metadata box
+        var panelBody = d3.select(".panel-body");
+
+        panelBody.html("")
         
         //use D3 to select the drop down menu
         var dropDownMenu = d3.selectAll("#selDataset");
@@ -39,34 +118,69 @@ d3.json("../../data/samples.json").then((data) => {
                 Plotly.newPlot("bar", plot)
             };
         });
-        // var otuIds = data.samples.map(id => id.otu_ids);
+    
+        // create bubble chart
+        data.samples.forEach(function(value) {
+            if (value.id === selection) {
+                var traceB = {
+                    x: value.otu_ids,
+                    y: value.sample_values,
+                    mode: 'markers',
+                    marker: {
+                      color: value.otu_ids,
+                      size: value.sample_values
+                    }
+                  };
+        
+                plotB = [traceB];
 
-        //slice the sampleValues and otuIds arrays to the top ten
-        // var sampleValues = sampleValues[0];
-        // var otuIds = otuIds[0];
+                Plotly.newPlot("bubble", plotB)
 
-        //sort sample values in descending order and slice to top 10
-        // var sortedSlicedSampleValues = sampleValues.map(result => result.slice(0,10));
+                console.log(value.otu_ids);
+                console.log(value.sample_values);
+            };
+        });
 
-        // var sortedSlicedOtuIds = otuIds.map(result => result.slice(0,10));
+        // populate the demographic info in the table upon change
+        var demoTable = d3.select(".panel-body");
 
-        // do a .reverse on the sliced data arrays
+        data.metadata.forEach(function (value) {
+            var num = value.id.toString()
+            
+            if (num === selection) {
+                
+                var p = demoTable.append("p");
+                p.attr("value", value.id);
+                p.text("ID:" + " " + value.id);
 
+                var p = demoTable.append("p");
+                p.attr("value", value.ethnicity);
+                p.text("Ethnicity:" + " " + value.ethnicity);
 
+                var p = demoTable.append("p");
+                p.attr("value", value.gender);
+                p.text("Gender:" + " " + value.gender);
 
-        // // create a trace which plots a horizontal bar of otu id's and the sample values
-        // var trace1 = {
-        //     x: sortedSlicedSampleValues[0],
-        //     labels: sortedSlicedOtuIds[0],
-        //     type: "bar", 
-        //     orientation: "h"
-        // };
+                var p = demoTable.append("p");
+                p.attr("value", value.age);
+                p.text("Age:" + " " + value.age);
 
-        // data = [trace1];
+                var p = demoTable.append("p");
+                p.attr("value", value.location);
+                p.text("Location:" + " " + value.location);
 
+                var p = demoTable.append("p");
+                p.attr("value", value.bbtype);
+                p.text("bbtype:" + " " + value.bbtype);
 
-        // console.log(sortedSlicedSampleValues);
-        // console.log(sortedSlicedOtuIds);
+                var p = demoTable.append("p");
+                p.attr("value", value.wfreq);
+                p.text("wfreq:" + " " + value.wfreq);
+            
+            };
+        
+        });
+
 
 
         
