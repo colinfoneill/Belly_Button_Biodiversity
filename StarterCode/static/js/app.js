@@ -1,5 +1,5 @@
 // pull in the json data from the data folder and create traces
-d3.json("data/samples.json").then((data) => {
+d3.json("StarterCode/samples.json").then((data) => {
     
     // add data to the dropdown menu
     var dropDown = d3.select("#selDataset");
