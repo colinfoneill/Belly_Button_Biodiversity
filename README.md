@@ -10,4 +10,4 @@ json data of extracted samples from 1000+ subjects.
 ![webpage preview](Images/hw02.png)
 
 ## How to Use
-Navigate to the root directory of the repository on your machine and open the index.html file with live server functionality in VSCode.
+Navigate to the root directory of the repository and open the index.html file with live server functionality in VSCode.
